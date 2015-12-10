@@ -57,6 +57,9 @@ public class Card : MonoBehaviour {
 	void OnMouseUp(){
 		if(click==0){
 			if(curPosition.x<8.5f&&curPosition.x>7.5f&&curPosition.y<-2.4f&&curPosition.y>-3.5f&&GameManager.turing==0&&GameManager.takeCard){
+				GameObject[] removeObjects = GameObject.FindGameObjectsWithTag("PlayerDiscard");
+				for(int i=0;i<removeObjects.Length;i++)
+					Destroy(removeObjects[i]);
 				transform.position = new Vector3(8,-3,0);
 				Init.gm.playerCard.playerDiscardCard(originX,originY);
 				GameManager.CardExist[originX,originY] = false;

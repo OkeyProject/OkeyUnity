@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour{
 		newLeadCard.transform.localScale = cardStatus.getScale();
 		newLeadCard.AddComponent<Card>();
 		Destroy(newLeadCard.GetComponent<BoxCollider>());
+
 		newLeadCard.GetComponent<Card>().val = leadCard;
 
 		Renderer newLeadCardRenderer = newLeadCard.GetComponent<Renderer>();
@@ -83,15 +84,21 @@ public class GameManager : MonoBehaviour{
 	}*/
 	public IEnumerator runAI(){
 		AIs = new AIs();
+		int preturing = 0;
 		while(true){
-			if(turing>0){
-				Debug.Log("Yeah");
+			if(turing!=preturing){
+				preturing = turing;
+				Debug.Log(turing);
+				AIs.runAI(turing);
+			}
+			/*if(turing>0){
+				AIs.runAI(turing);
 			}
 
 			if(turing>=3||turing==0)
 				turing = 0;
 			else
-				turing++;
+				turing++;*/
 			yield return new WaitForSeconds(0.5f);
 		}
 	}
