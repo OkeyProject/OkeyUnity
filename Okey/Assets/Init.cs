@@ -7,6 +7,7 @@ public class Init : MonoBehaviour {
 	void Start () {
 		gm = new GameManager ();
 		gm.deal ();
+		StartCoroutine(gm.runAI());
 	}
 	
 	// Update is called once per frame

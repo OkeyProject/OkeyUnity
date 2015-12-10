@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour{
 	public static int turing; 
 	public static bool takeCard;
 	public PlayerCard playerCard;
+	public AIs AIs;
 
 	public GameManager(){
 		cardstack = new CardStack ();
@@ -74,6 +75,24 @@ public class GameManager : MonoBehaviour{
 
 		Renderer newLeadCardRenderer = newLeadCard.GetComponent<Renderer>();
 		newLeadCardRenderer.materials[1].SetColor("_Color",leadCard.color);
+
 	}
 
+	/*public void runAI(){
+		AIs = new AIs();
+	}*/
+	public IEnumerator runAI(){
+		AIs = new AIs();
+		while(true){
+			if(turing>0){
+				Debug.Log("Yeah");
+			}
+
+			if(turing>=3||turing==0)
+				turing = 0;
+			else
+				turing++;
+			yield return new WaitForSeconds(0.5f);
+		}
+	}
 }
