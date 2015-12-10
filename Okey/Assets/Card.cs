@@ -93,6 +93,10 @@ public class Card : MonoBehaviour {
 					newDrawCardObj.transform.localScale = Init.gm.cardStatus.getScale();
 					newDrawCardObj.AddComponent<Card>();
 					newDrawCardObj.GetComponent<Card>().val = newDrawCard;
+
+					Renderer newCardRenderer = newDrawCardObj.GetComponent<Renderer>();
+					newCardRenderer.materials[1].SetColor("_Color",newDrawCard.color);
+
 					Init.gm.playerCard.playerDrawCard(newDrawCard,x,y);
 					GameManager.CardExist[x,y] = true;
 					GameManager.takeCard = true;

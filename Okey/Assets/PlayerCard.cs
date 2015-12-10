@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerCard{
+public class PlayerCard : MonoBehaviour{
 	
 	private Card.card[][,] CardsInHand;
 	private Card.card drawed;
@@ -57,6 +57,9 @@ public class PlayerCard{
 
 	public void enemyDiscardCard(int id,Card.card[,] discard){
 		if(GameManager.takeCard){
+			Card.card dis;
+			dis.number = 0;
+			dis.color = Color.white;
 			List<Card.card> compare = new List<Card.card>();
 			for(int j=0;j<2;j++){
 				for(int i=0;i<12;i++){
@@ -71,6 +74,9 @@ public class PlayerCard{
 					if(CardsInHand[id][i,j].number!=0&&CardsInHand[id][i,j].color!=Color.white){
 						if(compare.Contains(CardsInHand[id][i,j])){
 							compare.RemoveAt(compare.IndexOf(CardsInHand[id][i,j]));
+						}
+						else{
+							dis = CardsInHand[id][i,j];
 						}
 					}
 				}
@@ -88,15 +94,49 @@ public class PlayerCard{
 						CardsInHand[id][i,j] = discard[i,j];
 					}
 				}
+
+				DiscardShow(id,dis);
+
 				GameManager.takeCard = false;
 				if(GameManager.turing == 3)
 					GameManager.turing = 0;
 				else
 					GameManager.turing++;
+
 			}else{
 				Debug.LogError("Illegal Discard");
 			}
 		}
+	}
+
+	private void DiscardShow(int id, Card.card discard){
+		GameObject[] removeObjects = GameObject.FindGameObjectsWithTag("P"+id.ToString()+"Discard");
+		for(int i=0;i<removeObjects.Length;i++)
+			Destroy(removeObjects[i]);
+
+		string objname = "C"+discard.number;
+		GameObject newDrawCardObj;
+		switch(id){
+		case 1:
+			newDrawCardObj = Instantiate(Resources.Load(objname),new Vector3(8,1.5f,0),Init.gm.cardStatus.getRotate()) as GameObject;
+			break;
+		case 2:
+			newDrawCardObj = Instantiate(Resources.Load(objname),new Vector3(-8,1.5f,0),Init.gm.cardStatus.getRotate()) as GameObject;
+			break;
+		case 3:
+			newDrawCardObj = Instantiate(Resources.Load(objname),new Vector3(-8,-3,0),Init.gm.cardStatus.getRotate()) as GameObject;
+			break;
+		default:
+			newDrawCardObj = Instantiate(Resources.Load(objname),new Vector3(0,0,0),Init.gm.cardStatus.getRotate()) as GameObject;
+			break;
+		}
+		newDrawCardObj.transform.localScale = Init.gm.cardStatus.getScale();
+		newDrawCardObj.AddComponent<Card>();
+		newDrawCardObj.GetComponent<Card>().val = discard;
+		newDrawCardObj.tag = "P"+id.ToString()+"Discard";
+
+		Renderer newCardRenderer = newDrawCardObj.GetComponent<Renderer>();
+		newCardRenderer.materials[1].SetColor("_Color",discard.color);
 	}
 
 	public Card.card[,] getPlayerCard(){
