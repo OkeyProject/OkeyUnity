@@ -81,7 +81,22 @@ public class Card : MonoBehaviour {
 				}
 			}
 		} else if(click==1){
-			transform.position = originPosition;
+			//transform.position = originPosition;
+			if(curPosition.x>-5f&&curPosition.x<5f&&curPosition.y<-3f&&curPosition.y>-5.5f){
+				int x,y;
+				getNearestPoint(curPosition,out x,out y);
+				if(GameManager.CardExist[x,y]){
+					transform.position = originPosition;
+				}else{
+					transform.position = new Vector3(GameManager.CardAxisX[x],GameManager.CardAxisY[y],0);
+					GameManager.CardExist[x,y] = true;
+					GameManager.takeCard = true;
+					this.tag = "Untagged";
+					Debug.Log("Untag");
+				}
+			} else{
+				transform.position = originPosition;
+			}
 		} else if(click==2){
 			if(curPosition.x>-5f&&curPosition.x<5f&&curPosition.y<-3f&&curPosition.y>-5.5f){
 				int x,y;
